@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍵 Chai Ki Chuski - Full JS Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>🍵 Chai Ki Chuski - Web Dashboard</h1>
+        
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="#" data-page="menu" class="nav-button active">🍵 Menu</a>
+            <a href="#" data-page="orders" class="nav-button">🛒 Orders</a>
+            <a href="#" data-page="stock" class="nav-button">📦 Stock</a>
+            <a href="#" data-page="revenue" class="nav-button">💰 Revenue</a>
+            <a href="#" data-page="history" class="nav-button">📜 History</a>
+            <a href="#" data-page="database" class="nav-button">💾 Database</a>
+        </div>
+
+        <div class="content">
+
+            <section id="menu" class="page-content active">
+                <h2>🍵 Menu & Ordering</h2>
+                <div id="menu-container"></div>
+                
+                <hr style="margin: 30px 0;">
+
+                <h3>🛒 New Order Cart</h3>
+                <div class="customer-info-box">
+                    <div class="line2"><h4>Customer Details</h4></div>
+                    <input type="text" id="customer-name" placeholder="Name *" required>
+                    <input type="text" id="customer-phone" placeholder="Phone *" required>
+                    <input type="email" id="customer-email" placeholder="Email">
+                </div>
+                
+                <div id="cart-items"></div>
+                <div class="cart-summary">
+                    <strong>Total: <span id="cart-total">₹0.00</span></strong>
+                </div>
+                <button id="confirm-order-button" class="action-button primary">✅ Confirm & Save Order</button>
+            </section>
+
+            <section id="orders" class="page-content">
+                <h2>🛒 Manage Orders</h2>
+                <div id="orders-table-container"></div>
+                <div class="action-group">
+                    <button id="mark-complete-button" class="action-button success">✓ Mark Selected Complete</button>
+                    <button id="generate-bill-button" class="action-button secondary">🧾 Generate Bill</button>
+                </div>
+            </section>
+            
+            <section id="stock" class="page-content">
+                <h2>📦 Stock Management</h2>
+                <div id="stock-table-container"></div>
+                <div class="action-group">
+                    <button id="update-stock-button" class="action-button primary">🔄 Update Selected Stock</button>
+                    <button id="add-menu-item-button" class="action-button secondary">➕ Add New Menu Item</button>
+                </div>
+            </section>
+
+            <section id="revenue" class="page-content">
+                <h2>💰 Revenue Tracker</h2>
+                <div class="filter-group" id="revenue-filters">
+                    <button data-period="today">Today</button>
+                    <button data-period="yesterday">Yesterday</button>
+                    <button data-period="week">This Week</button>
+                    <button data-period="month">This Month</button>
+                    <button data-period="year">This Year</button>
+                    <button data-period="all" class="active">All Time</button>
+                </div>
+                <div id="revenue-stats"></div>
+                <div class="h3"><h3 style="margin-top: 20px;">Daily Breakdown</h3></div>
+                <div id="revenue-table-container"></div>
+            </section>
+
+            <section id="history" class="page-content">
+                <h2>📜 Transaction History</h2>
+                <div class="filter-group" id="history-filters">
+                    <button data-filter="all" class="active">All Transactions</button>
+                    <button data-filter="orders">Orders Only</button>
+                    <button data-filter="stock">Stock Updates</button>
+                    <button data-filter="revenue">Revenue Entries</button>
+                </div>
+                <div class="action-group">
+                    <button id="export-history-button" class="action-button primary">📥 Export History to Excel</button>
+                    <button id="clear-history-button" class="action-button secondary">🗑️ Clear All History</button>
+                </div>
+                <div id="history-container" style="margin-top: 20px;"></div>
+            </section>
+
+            <section id="database" class="page-content">
+                <h2>💾 Database Management</h2>
+                <div class="line"><p>Export all your data to Excel files for backup and analysis.</p></div>
+                <div class="database-section">
+                    <h3>📊 Export Options</h3>
+                    <div class="export-grid">
+                        <div class="export-card">
+                            <h4>🍵 Menu Items</h4>
+                            <p>All menu items with pricing and stock levels</p>
+                            <button id="export-menu-button" class="action-button primary">📥 Export Menu</button>
+                        </div>
+                        
+                        <div class="export-card">
+                            <h4>🛒 Orders</h4>
+                            <p>Complete order history with customer details</p>
+                            <button id="export-orders-button" class="action-button primary">📥 Export Orders</button>
+                        </div>
+                        
+                        <div class="export-card">
+                            <h4>👥 Customers</h4>
+                            <p>Customer database with contact information</p>
+                            <button id="export-customers-button" class="action-button primary">📥 Export Customers</button>
+                        </div>
+                        
+                        <div class="export-card">
+                            <h4>💰 Revenue</h4>
+                            <p>Revenue records by date</p>
+                            <button id="export-revenue-button" class="action-button primary">📥 Export Revenue</button>
+                        </div>
+                        
+                        <div class="export-card">
+                            <h4>📦 Stock History</h4>
+                            <p>All stock update transactions</p>
+                            <button id="export-stock-history-button" class="action-button primary">📥 Export Stock History</button>
+                        </div>
+                        
+                        <div class="export-card">
+                            <h4>📊 Complete Database</h4>
+                            <p>All data in one Excel file (multiple sheets)</p>
+                            <button id="export-all-button" class="action-button success">📥 Export Everything</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr style="margin: 30px 0;">
+                
+                <div class="database-section">
+                    <h3>⚙️ Database Actions</h3>
+                    <div class="action-group">
+                        <button id="backup-database-button" class="action-button secondary">💾 Download Backup (JSON)</button>
+                        <button id="reset-database-button" class="action-button" style="background-color: #dc3545;">⚠️ Reset All Data</button>
+                    </div>
+                    <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                        <strong>Backup:</strong> Downloads all data as a JSON file for restoration.<br>
+                        <strong>Reset:</strong> Clears all data and restores default menu items.
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <div id="modal-stock" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h4>Update Stock for <span id="modal-stock-name"></span></h4>
+            <input type="number" id="modal-stock-increase" placeholder="Quantity to add">
+            <button id="modal-stock-save" class="action-button primary">Save</button>
+        </div>
+    </div>
+    
+    <div id="modal-add-item" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h4>Add New Menu Item</h4>
+            <input type="text" id="add-item-name" placeholder="Item Name">
+            <select id="add-item-category">
+                <option value="Chai">Chai</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Drinks">Drinks</option>
+                <option value="Food">Food</option>
+            </select>
+            <input type="number" id="add-item-price" placeholder="Price (₹)">
+            <input type="number" id="add-item-stock" placeholder="Initial Stock">
+            <button id="modal-add-item-save" class="action-button primary">Add Item</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
